@@ -817,7 +817,7 @@
 
                 <!-- Pole Selector -->
                 <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">ขั้วแม่เหล็กของแท่งแม่เหล็ก:</label>
+                  <label for="sim4-select-pole" class="block text-xs font-semibold text-slate-700 mb-1">ขั้วแม่เหล็กของแท่งแม่เหล็ก:</label>
                   <select id="sim4-select-pole"
                     class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="N" selected>ขั้วเหนือ (North Pole - N)</option>
@@ -827,7 +827,7 @@
 
                 <!-- Motion Selector -->
                 <div>
-                  <label
+                  <label for="sim4-select-motion"
                     class="block text-xs font-semibold text-slate-700 mb-1">ทิศทางการเคลื่อนที่ของแท่งแม่เหล็ก:</label>
                   <select id="sim4-select-motion"
                     class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -874,7 +874,7 @@
                   <p id="lbl-sim4-calc">$\varepsilon = -20 \times \frac{1.5 \times 10^{-4}\text{ Wb}}{0.30\text{ s}}$
                   </p>
                   <p class="text-sm font-bold text-cyan-300 mt-1">อีเอ็มเอฟเหนี่ยวนำ $\varepsilon = $ <span
-                      id="lbl-sim4-result">-0.010</span> V</p>
+                      id="lbl-sim4-result">-0.010</span> $\text{ V}$</p>
                 </div>
               </div>
             </div>
@@ -1062,10 +1062,10 @@
                   ค่าอาร์เอ็มเอส:</span>
                 <p class="text-xs">$$V_{\text{rms}} = \frac{V_0}{\sqrt{2}} \approx 0.707 V_0$$</p>
                 <div class="text-xs space-y-1 text-violet-100 font-mono">
-                  <p>$\omega = 2\pi f = 2 \times 3.14 \times f = \dots$ rad/s</p>
+                  <p>$\omega = 2\pi f = 2 \times 3.14 \times f = \dots\text{ rad/s}$</p>
                   <p id="lbl-sim5-calc">$V_{\text{rms}} = \frac{311}{\sqrt{2}} \approx 220.0\text{ V}$</p>
                   <p class="text-sm font-bold text-cyan-300 mt-1">ค่าความต่างศักย์อาร์เอ็มเอส $V_{\text{rms}} = $ <span
-                      id="lbl-sim5-rms">220.0</span> V</p>
+                      id="lbl-sim5-rms">220.0</span> $\text{ V}$</p>
                 </div>
               </div>
             </div>
@@ -1136,7 +1136,7 @@
                   <p>$V_2 = V_1 \times \left(\frac{N_2}{N_1}\right)$</p>
                   <p id="lbl-sim5-trans-calc">$V_2 = 220 \times \left(\frac{250}{500}\right) = 110.0\text{ V}$</p>
                   <p class="text-sm font-bold text-cyan-300 mt-1">แรงดันไฟฟ้าขาออก $V_2 = $ <span
-                      id="lbl-sim5-v2">110.0</span> V</p>
+                      id="lbl-sim5-v2">110.0</span> $\text{ V}$</p>
                 </div>
               </div>
             </div>
@@ -1546,12 +1546,12 @@
           <div id="prac-numeric-zone" class="space-y-3">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label id="lbl-prac-input-1" class="block text-xs font-semibold text-slate-500 mb-1">ระบุคำตอบ:</label>
+                <label id="lbl-prac-input-1" for="prac-input-val1" class="block text-xs font-semibold text-slate-500 mb-1">ระบุคำตอบ:</label>
                 <input type="text" autocomplete="off" id="prac-input-val1" placeholder="เช่น 2.0"
                   class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
               <div id="prac-input-zone-2" class="hidden">
-                <label id="lbl-prac-input-2"
+                <label id="lbl-prac-input-2" for="prac-input-val2"
                   class="block text-xs font-semibold text-slate-500 mb-1">ระบุคำตอบที่สอง:</label>
                 <input type="text" autocomplete="off" id="prac-input-val2" placeholder="เช่น 60"
                   class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -1620,13 +1620,13 @@
           <h4 class="font-bold text-sm text-slate-700">กรอกข้อมูลผู้เข้าสอบ:</h4>
           <div class="space-y-3">
             <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1">ชื่อ-นามสกุล:</label>
+              <label for="exam-student-name" class="block text-xs font-semibold text-slate-500 mb-1">ชื่อ-นามสกุล:</label>
               <input type="text" id="exam-student-name" placeholder="เด็กหญิงสมศรี ดีเลิศ"
                 class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-violet-500 focus:outline-none text-sm">
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-semibold text-slate-500 mb-1">ชั้น ม.6 / ห้อง:</label>
+                <label for="exam-student-class" class="block text-xs font-semibold text-slate-500 mb-1">ชั้น ม.6 / ห้อง:</label>
                 <!-- Compiled classes for JS validation: border-rose-500 focus:ring-rose-500 bg-rose-100 text-rose-600 -->
                 <select id="exam-student-class"
                   class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-violet-500 focus:outline-none text-sm bg-white">
@@ -1639,7 +1639,7 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-500 mb-1">เลขที่:</label>
+                <label for="exam-student-no" class="block text-xs font-semibold text-slate-500 mb-1">เลขที่:</label>
                 <input type="number" id="exam-student-no" placeholder="5"
                   class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-violet-500 focus:outline-none text-sm">
               </div>
@@ -2057,8 +2057,34 @@
         };
       }
 
+      // --- กรณีโจทย์ที่ 5: วิเคราะห์สมการความต่างศักย์ไฟฟ้ากระแสสลับ (15_5_ex4) ---
+      if (template.id === '15_5_ex4') {
+        let V0, f;
+        if (seedFunc) {
+          V0 = [30, 45, 60, 110, 220, 311][Math.floor(seedFunc() * 6)];
+          f = [50, 60][Math.floor(seedFunc() * 2)];
+        } else if (isRandom) {
+          V0 = generateUniqueRandomValues(1, 30, 350, 10)[0];
+          f = generateUniqueRandomValues(1, 50, 60, 10)[0];
+        } else {
+          V0 = 45; f = 50;
+        }
+        const omegaText = f === 50 ? '100\\pi' : '120\\pi';
+        const Vrms = V0 / Math.sqrt(2);
+        return {
+          params: { V0, omegaText },
+          answers: [Vrms.toFixed(1)],
+          answersRaw: [Vrms],
+          explanation: () => `จากการเปรียบเทียบสมการ $v = ${V0}\\sin(${omegaText} t)$ กับสมการทั่วไป $v = V_0\\sin(\\omega t)$:
+      <br>1) ความต่างศักย์สูงสุด $V_0$ คือสัมประสิทธิ์หน้าฟังก์ชันไซน์:
+      <br>$$V_0 = ${V0}\\text{ V}$$
+      <br>2) ความต่างศักย์ยังผล หรือ ความต่างศักย์อาร์เอ็มเอส ($V_{\\text{rms}}$) คำนวณจากสูตร:
+      <br>$$V_{\\text{rms}} = \\frac{V_0}{\\sqrt{2}} = \\frac{${V0}}{\\sqrt{2}} \\approx \\frac{${V0}}{1.414} \\approx ${Vrms.toFixed(1)}\\text{ V}$$`
+        };
+      }
+
       // ตกเขียวส่งกลับคืนฟังก์ชัน Default กรณีเป็นโจทย์คอนเซปต์ที่ไม่ใช่คำนวณเชิงตัวเลข
-      return template.generate(isRandom);
+      return template.generate(seedFunc || isRandom);
     }
     let currentSection = 'home';
     let currentReviewTab = '15-4';
@@ -3006,8 +3032,9 @@
         ],
         text: (p) => `เมื่อขยับแท่งแม่เหล็กโดย **${p.actionText}** ขั้ว **${p.poleText}** เข้าหา/ออกจากขดลวดตัวนำวงกลม จะเกิดการเหนี่ยวนำขั้วแม่เหล็กชนิดใดที่ฝั่งใกล้ของขดลวดตัวนำเพื่อต้านการเคลื่อนที่ และกระแสไฟฟ้าเหนี่ยวนำที่เกิดขึ้น (เมื่อมองจากฝั่งแท่งแม่เหล็กเข้าหาขดลวด) จะมีทิศทางใด`,
         generate: (rand) => {
-          const pole = rand ? (Math.random() < 0.5 ? 'N' : 'S') : 'N';
-          const action = rand ? (Math.random() < 0.5 ? 'push' : 'pull') : 'push';
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const pole = rand ? (randFunc() < 0.5 ? 'N' : 'S') : 'N';
+          const action = rand ? (randFunc() < 0.5 ? 'push' : 'pull') : 'push';
           const poleText = pole === 'N' ? 'เหนือ (N)' : 'ใต้ (S)';
           const actionText = action === 'push' ? 'ดันเข้าหา' : 'ดึงออกจาก';
           let inducedPole = '';
@@ -3073,8 +3100,9 @@
         ],
         text: (p) => `ลวดตัวนำ PQ ยาววางอยู่บนรางตัวนำขนานซึ่งต่อกับหลอดไฟไว้ที่ฝั่งซ้ายของระบบ (โดย P อยู่ด้านบน และ Q อยู่ด้านล่าง) วงจรนี้วางตั้งฉากกับสนามแม่เหล็กสม่ำเสมอมีทิศ **${p.fieldDirText}** ถ้าลวด PQ ถูกดึงให้เลื่อนไปทาง **${p.slideDirText}** ด้วยความเร็วคงที่ $v$ ในทิศตั้งฉากกับสนามแม่เหล็ก จงหาทิศของกระแสไฟฟ้าเหนี่ยวนำผ่านหลอดไฟ และปลายข้างใดของลวด PQ มีศักย์ไฟฟ้าสูงกว่า`,
         generate: (rand) => {
-          const fieldDir = rand ? (Math.random() < 0.5 ? 'in' : 'out') : 'in';
-          const slideDir = rand ? (Math.random() < 0.5 ? 'right' : 'left') : 'right';
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const fieldDir = rand ? (randFunc() < 0.5 ? 'in' : 'out') : 'in';
+          const slideDir = rand ? (randFunc() < 0.5 ? 'right' : 'left') : 'right';
           const fieldDirText = fieldDir === 'in' ? 'พุ่งเข้ากระดาษ (⊗)' : 'พุ่งออกจากกระดาษ (⊙)';
           const slideDirText = slideDir === 'right' ? 'ขวา' : 'ซ้าย';
           let isUpwardForceOnPositive = false;
@@ -3122,6 +3150,7 @@
         ],
         text: (p) => `${p.questionText}`,
         generate: (rand) => {
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
           const questions = [
             {
               q: "เพราะเหตุใด ทิศทางของไฟฟ้ากระแสสลับที่เวลา $T/4$ กับ $3T/4$ จึงมีทิศทางตรงกันข้ามกัน?",
@@ -3139,7 +3168,7 @@
               explain: "แกนเหล็กอ่อนร่วมมีคุณสมบัติสารแม่เหล็กชั่วคราวที่ดีมาก ช่วยเก็บรวบรวมฟลักซ์แม่เหล็กที่เกิดจากกระแสปฐมภูมิ และนำทางไปยังขดลวดทุติยภูมิเกือบ 100% ทำให้ลดการสูญเสียฟลักซ์ออกสู่ภายนอก"
             }
           ];
-          const qSelected = rand ? questions[Math.floor(Math.random() * questions.length)] : questions[2];
+          const qSelected = rand ? questions[Math.floor(randFunc() * questions.length)] : questions[2];
           const choices = [
             'เพื่อนำและรวบรวมฟลักซ์แม่เหล็กส่งผ่านไปยังอีกขดลวดได้อย่างมีประสิทธิภาพสูงสุด',
             'เพื่อเปลี่ยนกระแสสลับให้เป็นกระแสตรงผ่านการเหนี่ยวนำแม่เหล็กไฟฟ้า',
@@ -3421,18 +3450,18 @@
         } else if (q.type === 'numeric_single') {
           inputHTML += `<div class="grid grid-cols-1 gap-4 pt-2">
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1">${q.inputs[0].label}</label>
+          <label for="exam-q${idx}-val1" class="block text-xs font-semibold text-slate-500 mb-1">${q.inputs[0].label}</label>
           <input type="text" autocomplete="off" id="exam-q${idx}-val1" placeholder="เช่น 2.0 หรือ 2.0e-3" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm">
         </div>
       </div>`;
         } else if (q.type === 'numeric_double') {
           inputHTML += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1">${q.inputs[0].label}</label>
+          <label for="exam-q${idx}-val1" class="block text-xs font-semibold text-slate-500 mb-1">${q.inputs[0].label}</label>
           <input type="text" autocomplete="off" id="exam-q${idx}-val1" placeholder="ระบุคำตอบแรก" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1">${q.inputs[1].label}</label>
+          <label for="exam-q${idx}-val2" class="block text-xs font-semibold text-slate-500 mb-1">${q.inputs[1].label}</label>
           <input type="text" autocomplete="off" id="exam-q${idx}-val2" placeholder="ระบุคำตอบที่สอง" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm">
         </div>
       </div>`;
