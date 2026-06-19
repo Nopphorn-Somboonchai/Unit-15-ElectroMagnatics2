@@ -196,14 +196,17 @@
       color: #ffffff !important;
       border: 1px solid rgba(33, 150, 243, 0.2) !important;
     }
+
     .btn-practice-check:hover {
       background: linear-gradient(90deg, #00acc1, #1e88e5) !important;
     }
+
     .btn-practice-reset {
       background: #ecfeff !important;
       color: #0e7490 !important;
       border: 1px solid #cffafe !important;
     }
+
     .btn-practice-reset:hover {
       background: #cffafe !important;
     }
@@ -834,7 +837,8 @@
 
                 <!-- Pole Selector -->
                 <div>
-                  <label for="sim4-select-pole" class="block text-xs font-semibold text-slate-700 mb-1">ขั้วแม่เหล็กของแท่งแม่เหล็ก:</label>
+                  <label for="sim4-select-pole"
+                    class="block text-xs font-semibold text-slate-700 mb-1">ขั้วแม่เหล็กของแท่งแม่เหล็ก:</label>
                   <select id="sim4-select-pole"
                     class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="N" selected>ขั้วเหนือ (North Pole - N)</option>
@@ -1563,7 +1567,8 @@
           <div id="prac-numeric-zone" class="space-y-3">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label id="lbl-prac-input-1" for="prac-input-val1" class="block text-xs font-semibold text-slate-500 mb-1">ระบุคำตอบ:</label>
+                <label id="lbl-prac-input-1" for="prac-input-val1"
+                  class="block text-xs font-semibold text-slate-500 mb-1">ระบุคำตอบ:</label>
                 <input type="text" autocomplete="off" id="prac-input-val1" placeholder="เช่น 2.0"
                   class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
@@ -1637,13 +1642,15 @@
           <h4 class="font-bold text-sm text-slate-700">กรอกข้อมูลผู้เข้าสอบ:</h4>
           <div class="space-y-3">
             <div>
-              <label for="exam-student-name" class="block text-xs font-semibold text-slate-500 mb-1">ชื่อ-นามสกุล:</label>
+              <label for="exam-student-name"
+                class="block text-xs font-semibold text-slate-500 mb-1">ชื่อ-นามสกุล:</label>
               <input type="text" id="exam-student-name" placeholder="เด็กหญิงสมศรี ดีเลิศ"
                 class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-violet-500 focus:outline-none text-sm">
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label for="exam-student-class" class="block text-xs font-semibold text-slate-500 mb-1">ชั้น ม.6 / ห้อง:</label>
+                <label for="exam-student-class" class="block text-xs font-semibold text-slate-500 mb-1">ชั้น ม.6 /
+                  ห้อง:</label>
                 <!-- Compiled classes for JS validation: border-rose-500 focus:ring-rose-500 bg-rose-100 text-rose-600 -->
                 <select id="exam-student-class"
                   class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-violet-500 focus:outline-none text-sm bg-white">
@@ -3248,6 +3255,138 @@
         id: '15_5_ex3', topic: '15.5', type: 'numeric_single',
         title: 'ความสัมพันธ์ขดลวดหม้อแปลงไฟฟ้า',
         inputs: [{ label: 'ความต่างศักย์ขาออกทุติยภูมิ V2 (V):' }],
+        text: (p) => `หม้อแปลงไฟฟ้ามีจำนวนรอบของขดลวดปฐมภูมิ ${p.N1} รอบ และจำนวนรอบของขดลวดทุติยภูมิ ${p.N2} รอบ เมื่อจ่ายไฟฟ้าสลับความต่างศักย์ปฐมภูมิเข้าขนาด ${p.V1} V จงหาความต่างศักย์ทุติยภูมิ (ตอบปัดทศนิยม 1 ตำแหน่ง)`,
+        generate: (rand) => {
+          const N1 = rand ? [200, 500, 1000][Math.floor(Math.random() * 3)] : 500;
+          const N2 = rand ? [100, 250, 1000, 2000][Math.floor(Math.random() * 4)] : 250;
+          const V1 = rand ? [110, 220, 240][Math.floor(Math.random() * 3)] : 220;
+          const V2 = V1 * (N2 / N1);
+          return {
+            params: { N1, N2, V1 },
+            answers: [V2.toFixed(1)],
+            answersRaw: [V2],
+            explanation: () => `คำนวณโดยใช้ความสัมพันธ์ของหม้อแปลงไฟฟ้าในอุดมคติ:
+        <br>$$\\frac{V_2}{V_1} = \\frac{N_2}{N_1}$$
+        <br>ย้ายสมการเพื่อหาความต่างศักย์ขาออกทุติยภูมิ ($V_2$):
+        <br>$$V_2 = V_1 \\left( \\frac{N_2}{N_1} \\right) = ${V1} \\times \\left( \\frac{${N2}}{${N1}} \\right) = ${V2.toFixed(1)}\\text{ V}$$
+        <br>ดังนั้น ความต่างศักย์ทุติยภูมิที่เกิดขึ้นคือ $${V2.toFixed(1)}$ โวลต์`
+          };
+        }
+      },
+      {
+        id: '15_5_ex4', topic: '15.5', type: 'numeric_single',
+        title: 'วิเคราะห์สมการความต่างศักย์ไฟฟ้ากระแสสลับ (RMS)',
+        inputs: [{ label: 'ความต่างศักย์ยังผล / RMS (V):' }],
+        text: (p) => `ความต่างศักย์ไฟฟ้ากระแสสลับมีค่าตามสมการ $v = ${p.V0}\\sin(${p.omegaText} t)$ ความต่างศักย์อาร์เอ็มเอสมีค่าเท่าใด (ตอบปัดทศนิยม 1 ตำแหน่ง)`,
+        generate: (rand) => {
+          const V0 = rand ? [30, 45, 60, 110, 220, 311][Math.floor(Math.random() * 6)] : 45;
+          const f = rand ? [50, 60][Math.floor(Math.random() * 2)] : 50;
+          const omegaText = f === 50 ? '100\\pi' : '120\\pi';
+          const Vrms = V0 / Math.sqrt(2);
+          return {
+            params: { V0, omegaText },
+            answers: [Vrms.toFixed(1)],
+            answersRaw: [Vrms],
+            explanation: () => `จากการเปรียบเทียบสมการ $v = ${V0}\\sin(${omegaText} t)$ กับสมการทั่วไป $v = V_0\\sin(\\omega t)$:
+        <br>1) ความต่างศักย์สูงสุด $V_0$ คือสัมประสิทธิ์หน้าฟังก์ชันไซน์:
+        <br>$$V_0 = ${V0}\\text{ V}$$
+        <br>2) ความต่างศักย์ยังผล หรือ ความต่างศักย์อาร์เอ็มเอส ($V_{\\text{rms}}$) คำนวณจากสูตร:
+        <br>$$V_{\\text{rms}} = \\frac{V_0}{\\sqrt{2}} = \\frac{${V0}}{\\sqrt{2}} \\approx \\frac{${V0}}{1.414} \\approx ${Vrms.toFixed(1)}\\text{ V}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_q1_concept', topic: '15.5', type: 'choice',
+        title: 'ทฤษฎีไฟฟ้ากระแสสลับและหม้อแปลง (สสวท. คำถาม 15.5)',
+        choices: [
+          'เพื่อนำและรวบรวมฟลักซ์แม่เหล็กส่งผ่านไปยังอีกขดลวดได้อย่างมีประสิทธิภาพสูงสุด',
+          'เพื่อเปลี่ยนกระแสสลับให้เป็นกระแสตรงผ่านการเหนี่ยวนำแม่เหล็กไฟฟ้า',
+          'เพื่อลดความสึกหรอและหลีกเลี่ยงการใช้วงแหวนลื่นและแปรงถ่านสัมผัส',
+          'เพราะในช่วงเวลาห่างกันครึ่งคาบ ขดลวดของเครื่องกำเนิดจะหมุนไป 180 องศา'
+        ],
+        text: (p) => `${p.questionText}`,
+        generate: (rand) => {
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const questions = [
+            {
+              q: "เพราะเหตุใด ทิศทางของไฟฟ้ากระแสสลับที่เวลา $T/4$ กับ $3T/4$ จึงมีทิศทางตรงกันข้ามกัน?",
+              ans: "เพราะในช่วงเวลาห่างกันครึ่งคาบ ขดลวดของเครื่องกำเนิดจะหมุนไป 180 องศา",
+              explain: "ณ เวลา $t = T/4$ เฟสของคลื่นไซน์คือ $90^\\circ$ (มีค่า $+1$) ส่วนที่เวลา $t = 3T/4$ เฟสคือ $270^\\circ$ (มีค่า $-1$) ซึ่งห่างกันครึ่งคาบพอดี ขดลวดหมุนไป $180^\\circ$ ทำให้อีเอ็มเอฟเปลี่ยนทิศตรงกันข้าม"
+            },
+            {
+              q: "เหตุใดเครื่องกำเนิดไฟฟ้าในทางปฏิบัติส่วนใหญ่ จึงนิยมใช้หมุนแท่งแม่เหล็กเหนี่ยวนำแทนการหมุนขดลวดตัวนำ?",
+              ans: "เพื่อลดความสึกหรอและหลีกเลี่ยงการใช้วงแหวนลื่นและแปรงถ่านสัมผัส",
+              explain: "การหมุนแม่เหล็กและให้ขดลวดอยู่นิ่ง ทำให้เราสามารถดึงไฟฟ้ากระแสสลับความต่างศักย์สูงออกจากขดลวดได้โดยตรงผ่านขั้วต่อที่อยู่กับที่ ลดการเกิดประกายไฟและแปรงถ่านสึกหรอ"
+            },
+            {
+              q: "ในการสร้างหม้อแปลงไฟฟ้า เหตุใดจึงต้องพันขดลวดปฐมภูมิและทุติยภูมิบนแกนเหล็กอ่อนร่วมกัน?",
+              ans: "เพื่อนำและรวบรวมฟลักซ์แม่เหล็กส่งผ่านไปยังอีกขดลวดได้อย่างมีประสิทธิภาพสูงสุด",
+              explain: "แกนเหล็กอ่อนร่วมมีคุณสมบัติสารแม่เหล็กชั่วคราวที่ดีมาก ช่วยเก็บรวบรวมฟลักซ์แม่เหล็กที่เกิดจากกระแสปฐมภูมิ และนำทางไปยังขดลวดทุติยภูมิเกือบ 100% ทำให้ลดการสูญเสียฟลักซ์ออกสู่ภายนอก"
+            }
+          ];
+          const qSelected = rand ? questions[Math.floor(randFunc() * questions.length)] : questions[2];
+          const choices = [
+            'เพื่อนำและรวบรวมฟลักซ์แม่เหล็กส่งผ่านไปยังอีกขดลวดได้อย่างมีประสิทธิภาพสูงสุด',
+            'เพื่อเปลี่ยนกระแสสลับให้เป็นกระแสตรงผ่านการเหนี่ยวนำแม่เหล็กไฟฟ้า',
+            'เพื่อลดความสึกหรอและหลีกเลี่ยงการใช้วงแหวนลื่นและแปรงถ่านสัมผัส',
+            'เพราะในช่วงเวลาห่างกันครึ่งคาบ ขดลวดของเครื่องกำเนิดจะหมุนไป 180 องศา'
+          ];
+          return {
+            params: { questionText: qSelected.q },
+            answers: [qSelected.ans],
+            answersRaw: [choices.indexOf(qSelected.ans)],
+            explanation: () => `คำอธิบายเชิงแนวคิด: ${qSelected.explain}`
+          };
+        }
+      },
+      {
+        id: '15_5_ex1', topic: '15.5', type: 'numeric_double',
+        title: 'วิเคราะห์สมการกระแสสลับ (สสวท. แบบฝึกหัด 15.5 ข้อ 1)',
+        inputs: [{ label: 'กระแสสูงสุด I0 (A):' }, { label: 'กระแสยังผล / RMS (A):' }],
+        text: (p) => `ในวงจรไฟฟ้ากระแสสลับหนึ่ง กระแสไฟฟ้า $i$ ในหน่วยแอมแปร์ (A) แปรผันตามเวลา $t$ ในหน่วยวินาที (s) ตามสมการ $i = ${p.I0}\\sin(${p.omega} t)$ จงหากระแสไฟฟ้าสูงสุด ($I_0$) และกระแสไฟฟ้ายังผล ($I_{\\text{rms}}$) (ตอบกระแสยังผลปัดทศนิยม 2 ตำแหน่ง)`,
+        generate: (rand) => {
+          const I0 = rand ? [2, 4, 6, 8, 10][Math.floor(Math.random() * 5)] : 2;
+          const omega = rand ? [314, 100, 377, 628][Math.floor(Math.random() * 4)] : 314;
+          const Irms = I0 / Math.sqrt(2);
+          return {
+            params: { I0, omega },
+            answers: [I0.toString(), Irms.toFixed(2)],
+            answersRaw: [I0, Irms],
+            explanation: () => `จากการเปรียบเทียบสมการ $i = ${I0}\\sin(${omega}t)$ กับสมการทั่วไป $i = I_0\\sin(\\omega t)$:
+        <br>1) กระแสไฟฟ้าสูงสุด $I_0$ คือสัมประสิทธิ์หน้าฟังก์ชันไซน์:
+        <br>$$I_0 = ${I0}\\text{ A}$$
+        <br>2) กระแสไฟฟ้ายังผล (RMS) คำนวณจากสูตร:
+        <br>$$I_{\\text{rms}} = \\frac{I_0}{\\sqrt{2}} = \\frac{${I0}}{1.414} = ${Irms.toFixed(2)}\\text{ A}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_ex2', topic: '15.5', type: 'numeric_single',
+        title: 'กระแสสูงสุดผ่านตัวต้านทาน (สสวท. แบบฝึกหัด 15.5 ข้อ 2)',
+        inputs: [{ label: 'กระแสไฟฟ้าสูงสุด (A):' }],
+        text: (p) => `ตัวต้านทานขนาด $${p.R}\\ \\Omega$ ต่อเข้ากับแหล่งจ่ายไฟฟ้ากระแสสลับ เมื่อใช้โวลต์มิเตอร์วัดความต่างศักย์คร่อมตัวต้านทานนี้อ่านค่าได้ $${p.Vrms}\\text{ V}$ กระแสไฟฟ้าสูงสุดที่ผ่านตัวต้านทานนี้มีค่าเท่าใด (ตอบปัดทศนิยม 2 ตำแหน่ง)`,
+        generate: (rand) => {
+          const R = rand ? [50, 80, 100, 200][Math.floor(Math.random() * 4)] : 80;
+          const Vrms = rand ? [100, 120, 220, 240][Math.floor(Math.random() * 4)] : 120;
+          const Irms = Vrms / R;
+          const I0 = Irms * Math.sqrt(2);
+          return {
+            params: { R, Vrms },
+            answers: [I0.toFixed(2)],
+            answersRaw: [I0],
+            explanation: () => `ขั้นตอนการคำนวณ:
+        <br>1. โวลต์มิเตอร์ที่ต่อคร่อมตัวต้านทานจะอ่านค่าแรงดันแบบ RMS: $V_{\\text{rms}} = ${Vrms}\\text{ V}$
+        <br>2. ใช้กฎของโอห์มหาค่ายังผลของกระแสไฟฟ้า ($I_{\\text{rms}}$):
+        <br>$$I_{\\text{rms}} = \\frac{V_{\\text{rms}}}{R} = \\frac{${Vrms}\\text{ V}}{${R}\\ \\Omega} = ${Irms.toFixed(2)}\\text{ A}$$
+        <br>3. คำนวณหากระแสไฟฟ้าสูงสุด ($I_0$) จากค่ายังผล:
+        <br>$$I_0 = \\sqrt{2} I_{\\text{rms}} = 1.414 \\times ${Irms.toFixed(2)}\\text{ A} = ${I0.toFixed(2)}\\text{ A}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_ex3', topic: '15.5', type: 'numeric_single',
+        title: 'ความสัมพันธ์ขดลวดหม้อแปลงไฟฟ้า',
+        inputs: [{ label: 'ความต่างศักย์ขาออกทุติยภูมิ V2 (V):' }],
         text: (p) => `หม้อแปลงไฟฟ้ามีจำนวนรอบของขดลวดปฐมภูมิ $${p.N1}\\text{ รอบ}$ และจำนวนรอบของขดลวดทุติยภูมิ $${p.N2}\\text{ รอบ}$ เมื่อจ่ายไฟฟ้าสลับความต่างศักย์ปฐมภูมิเข้าขนาด $${p.V1}\\text{ V}$ จงหาความต่างศักย์ทุติยภูมิ (ตอบปัดทศนิยม 1 ตำแหน่ง)`,
         generate: (rand) => {
           const N1 = rand ? [200, 500, 1000][Math.floor(Math.random() * 3)] : 500;
@@ -3285,6 +3424,117 @@
         <br>$$V_0 = ${V0}\\text{ V}$$
         <br>2) ความต่างศักย์ยังผล หรือ ความต่างศักย์อาร์เอ็มเอส ($V_{\\text{rms}}$) คำนวณจากสูตร:
         <br>$$V_{\\text{rms}} = \\frac{V_0}{\\sqrt{2}} = \\frac{${V0}}{\\sqrt{2}} \\approx \\frac{${V0}}{1.414} \\approx ${Vrms.toFixed(1)}\\text{ V}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_img1_transformer_n2', topic: '15.5', type: 'numeric',
+        title: 'คำนวณรอบขดลวดทุติยภูมิ (Unseen-1)',
+        inputs: [{ label: 'จำนวนรอบขดลวดทุติยภูมิ (รอบ):' }],
+        text: (p) => `หม้อแปลงไฟฟ้าซึ่งใช้ไฟฟ้า ${p.V1} โวลต์ มีขดลวดปฐมภูมิ ${p.N1} รอบ ถ้าต้องการให้หม้อแปลงนี้สามารถจ่ายไฟฟ้าได้ ${p.V2} โวลต์ ขดลวดทุติยภูมิต้องมีจำนวนรอบเท่าไร`,
+        generate: (rand) => {
+          const V1 = rand ? [100, 200, 220, 240][Math.floor(Math.random() * 4)] : 200;
+          const N1 = rand ? [50, 100, 200][Math.floor(Math.random() * 3)] : 100;
+          const V2 = rand ? [1000, 2000, 3000, 4000][Math.floor(Math.random() * 4)] : 3000;
+          const N2 = (V2 / V1) * N1;
+          return {
+            params: { V1, N1, V2 },
+            answers: [N2.toString()],
+            answersRaw: [N2],
+            explanation: () => `จากความสัมพันธ์ของหม้อแปลงไฟฟ้า:
+            <br>$$\\frac{V_2}{V_1} = \\frac{N_2}{N_1}$$
+            <br>แทนค่า: $$\\frac{${V2}}{${V1}} = \\frac{N_2}{${N1}}$$
+            <br>แก้สมการหา $N_2$:
+            <br>$$N_2 = \\frac{${V2} \\times ${N1}}{${V1}} = ${N2}\\text{ รอบ}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_img2_transformer_eff', topic: '15.5', type: 'numeric',
+        title: 'ประสิทธิภาพหม้อแปลงและกระแสปฐมภูมิ (Unseen-2)',
+        inputs: [{ label: 'กระแสไฟฟ้าปฐมภูมิ (A):' }],
+        text: (p) => `หม้อแปลงไฟลงจาก  ${p.V1} โวลต์ เป็น ${p.V2} โวลต์ เกิดกำลังในขดลวดทุติยภูมิ ${p.P2} กิโลวัตต์ หม้อแปลงมีประสิทธิภาพร้อยละ ${p.Eff} กระแสไฟฟ้าที่ผ่านขดลวดปฐมภูมิมีค่าเท่าใด (ตอบปัดทศนิยม 2 ตำแหน่ง)`,
+        generate: (rand) => {
+          const V1 = rand ? [10000, 20000, 22000][Math.floor(Math.random() * 3)] : 20000;
+          const V2 = rand ? [100, 200, 220][Math.floor(Math.random() * 3)] : 200;
+          const P2_kW = rand ? [2.8, 5.6, 11.2][Math.floor(Math.random() * 3)] : 5.6;
+          const Eff = rand ? [80, 90][Math.floor(Math.random() * 2)] : 80;
+          const P2_W = P2_kW * 1000;
+          const P1_W = P2_W / (Eff / 100);
+          const I1 = P1_W / V1;
+          return {
+            params: { V1, V2, P2: P2_kW, Eff },
+            answers: [I1.toFixed(2)],
+            answersRaw: [I1],
+            explanation: () => `1. หากำลังไฟฟ้าในขดลวดปฐมภูมิ ($P_1$) จากประสิทธิภาพ ($\\text{Eff} = \\frac{P_2}{P_1} \\times 100$):
+            <br>กำลังขดลวดทุติยภูมิ $P_2 = ${P2_kW}\\text{ kW} = ${P2_W}\\text{ W}$
+            <br>$$P_1 = \\frac{P_2}{\\text{Eff}/100} = \\frac{${P2_W}}{${Eff / 100}} = ${P1_W}\\text{ W}$$
+            <br>2. หากระแสปฐมภูมิ ($I_1$) จากสมการกำลังไฟฟ้า $P_1 = I_1 V_1$:
+            <br>$$I_1 = \\frac{P_1}{V_1} = \\frac{${P1_W}}{${V1}} = ${I1.toFixed(2)}\\text{ A}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_img3_ac_im', topic: '15.5', type: 'numeric',
+        title: 'หากระแสสูงสุดจากแอมมิเตอร์ (Unseen-3)',
+        inputs: [{ label: 'กระแสสูงสุด Im (A):' }],
+        text: (p) => `แอมมิเตอร์กระแสไฟฟ้าสลับต่ออนุกรมกับหลอดไฟอ่านค่าได้ ${p.Irms} แอมแปร์ จงหากระแสสูงสุด ($I_m$) ที่ไหลผ่านหลอดไฟในหน่วยแอมแปร์ (ปัดทศนิยม 2 ตำแหน่ง กำหนด $\\sqrt{2} \\approx 1.414$)`,
+        generate: (rand) => {
+          const Irms = rand ? [0.25, 0.50, 1.25][Math.floor(Math.random() * 3)] : 0.25;
+          const Im = Irms * Math.sqrt(2);
+          return {
+            params: { Irms },
+            answers: [Im.toFixed(2)],
+            answersRaw: [Im],
+            explanation: () => `ค่าที่อ่านได้จากแอมมิเตอร์กระแสสลับคือ <strong>ค่ายังผล (RMS)</strong> ดังนั้น $I_{\\text{rms}} = ${Irms}\\text{ A}$
+            <br>จากความสัมพันธ์ของกระแสสูงสุดและค่ายังผล:
+            <br>$$I_m = I_{\\text{rms}} \\times \\sqrt{2}$$
+            <br>$$I_m = ${Irms} \\times 1.414 \\approx ${Im.toFixed(2)}\\text{ A}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_img4_ac_vmax', topic: '15.5', type: 'numeric',
+        title: 'ความต่างศักย์สูงสุดของไฟบ้าน (Unseen-4)',
+        inputs: [{ label: 'ความต่างศักย์สูงสุด (V):' }],
+        text: (p) => `ถ้ากล่าวว่าไฟฟ้าในบ้านมีความต่างศักย์ ${p.Vrms} โวลต์ หมายความว่าความต่างศักย์สูงสุดมีค่ากี่โวลต์ (ปัดทศนิยม 1 ตำแหน่ง กำหนด $\\sqrt{2} \\approx 1.414$)`,
+        generate: (rand) => {
+          const Vrms = rand ? [110, 220, 240][Math.floor(Math.random() * 3)] : 220;
+          const Vmax = Vrms * Math.sqrt(2);
+          return {
+            params: { Vrms },
+            answers: [Vmax.toFixed(1)],
+            answersRaw: [Vmax],
+            explanation: () => `ความต่างศักย์ของไฟฟ้าตามบ้านที่ระบุทั่วไปคือ <strong>ค่ายังผล (RMS)</strong> ดังนั้น $V_{\\text{rms}} = ${Vrms}\\text{ V}$
+            <br>หาความต่างศักย์สูงสุดจากสูตร:
+            <br>$$V_{\\text{max}} = V_{\\text{rms}} \\times \\sqrt{2}$$
+            <br>$$V_{\\text{max}} = ${Vrms} \\times 1.414 \\approx ${Vmax.toFixed(1)}\\text{ V}$$`
+          };
+        }
+      },
+      {
+        id: '15_5_img5_ac_eq', topic: '15.5', type: 'numeric_double',
+        title: 'สมการความต่างศักย์กระแสสลับจากมิเตอร์ (Unseen-5)',
+        inputs: [
+          { label: 'สัมประสิทธิ์หน้า sin (A):' },
+          { label: 'สัมประสิทธิ์หน้า π (B):' }
+        ],
+        text: (p) => `โวลต์มิเตอร์ตัวหนึ่งอ่านค่าความต่างศักย์ของไฟบ้านซึ่งเป็นไฟฟ้ากระแสสลับ $${p.f}\\text{ เฮิรตซ์}$ ได้ $${p.Vrms}\\text{ โวลต์}$ ถ้า $V$ เป็นค่าความต่างศักย์ระหว่างคู่สายที่เวลา $t$ ใดๆ สามารถเขียนสมการในรูป $V = A \\sin(B\\pi t)$ จงหาค่า $A$ (ปัดเป็นจำนวนเต็ม) และ $B$`,
+        generate: (rand) => {
+          const f = rand ? [50, 60][Math.floor(Math.random() * 2)] : 50;
+          const Vrms = rand ? [110, 200, 220][Math.floor(Math.random() * 3)] : 200;
+          const Vmax = Math.round(Vrms * Math.sqrt(2));
+          const B = 2 * f;
+          return {
+            params: { f, Vrms },
+            answers: [Vmax.toString(), B.toString()],
+            answersRaw: [Vmax, B],
+            explanation: () => `1. ค่าที่อ่านจากโวลต์มิเตอร์คือค่ายังผล: $V_{\\text{rms}} = ${Vrms}\\text{ V}$
+            <br>หาความต่างศักย์สูงสุด ($A$): $V_{\\text{max}} = V_{\\text{rms}} \\times \\sqrt{2} = ${Vrms} \\times 1.414 \\approx ${Vmax}\\text{ V}$
+            <br>2. หาความถี่เชิงมุม ($\\omega$) จากความถี่ $f = ${f}\\text{ Hz}$:
+            <br>$$\\omega = 2\\pi f = 2\\pi(${f}) = ${B}\\pi\\text{ rad/s}$$
+            <br>ดังนั้นสัมประสิทธิ์หน้า $\\pi$ คือ $B = ${B}$
+            <br>3. จะได้สมการ: <strong>$V = ${Vmax} \\sin(${B}\\pi t)$</strong>`
           };
         }
       }
