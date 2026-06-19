@@ -33,7 +33,7 @@
     :root {
       --ink: #14313d;
       --muted: #5f7480;
-      --paper: rgba(255, 255, 255, 0.92);
+      --paper: rgba(228, 245, 233, 0.92);
       --line: rgba(20, 49, 61, 0.09);
       --mint: #35d0ba;
       --sky: #2f80ed;
@@ -199,9 +199,6 @@
       border-color: rgba(255, 207, 90, 0.38) !important;
     }
 
-    #review-tab-single .bg-slate-900 {
-      background: linear-gradient(135deg, #12343b, #0f766e) !important;
-    }
 
     .btn-practice-check {
       background: linear-gradient(90deg, #26c6da, #2196f3) !important;
@@ -223,42 +220,6 @@
       background: #cffafe !important;
     }
 
-    svg[aria-label="ภาพปลายวัตถุวางบนสเกล"] rect:first-child {
-      fill: #fbfefb;
-    }
-
-    .measurement-figure {
-      position: relative;
-      cursor: zoom-in;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      transition: transform 140ms ease, box-shadow 140ms ease;
-    }
-
-    .measurement-figure:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 28px rgba(20, 49, 61, 0.1);
-    }
-
-    .measurement-figure::after {
-      content: "แตะเพื่อซูม";
-      position: absolute;
-      right: 0.75rem;
-      top: 0.75rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 999px;
-      background: rgba(20, 49, 61, 0.78);
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      pointer-events: none;
-    }
-
-    #measurement-zoom-stage svg {
-      width: min(1120px, 175vw);
-      max-width: none;
-      height: auto;
-    }
 
     body.exam-locked header {
       position: static !important;
@@ -271,7 +232,6 @@
     .text-slate-800,
     .text-slate-900,
     .text-blue-950,
-    .text-indigo-950,
     .text-violet-950 {
       color: var(--ink) !important;
     }
@@ -383,17 +343,8 @@
       main .rounded-2xl {
         border-radius: 14px;
       }
-
-      .measurement-figure svg {
-        min-width: 720px;
-      }
     }
 
-    @media (max-width: 420px) {
-      .measurement-figure svg {
-        min-width: 680px;
-      }
-    }
 
     @media (max-height: 430px) and (orientation: landscape) {
       header .max-w-6xl {
@@ -440,10 +391,6 @@
       /* Deep navy blue */
     }
 
-    .bg-indigo-950 {
-      background-color: #1a1b4b !important;
-      /* Deep indigo */
-    }
 
     .bg-violet-950 {
       background-color: #29134a !important;
@@ -562,9 +509,6 @@
       background-color: #f0f4ff !important;
     }
 
-    .hover\:bg-violet-50:hover {
-      background-color: #f5f3ff !important;
-    }
 
     /* 8. Form Inputs and Selects (Day/Default Mode) */
     input[type="text"],
@@ -1515,7 +1459,7 @@
 
       <!-- Mode Selector -->
       <div id="total-questions-display" class="total-questions-badge">
-        มีข้อสอบในคลังทั้งหมด: <span id="total-count">0</span> ข้อ
+        ข้อสอบในคลัง : <span id="total-count">0</span> ข้อ
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <button onclick="startPracticeMode('15-4')" id="btn-prac-15-4"
@@ -3102,7 +3046,7 @@
         id: '15_4_ex1', topic: '15.4', type: 'numeric_single',
         title: 'คำนวณอีเอ็มเอฟเหนี่ยวนำเฉลี่ย (สสวท. แบบฝึกหัด 15.4 ข้อ 1)',
         inputs: [{ label: 'ขนาดอีเอ็มเอฟเหนี่ยวนำเฉลี่ย (V):' }],
-        text: (p) => `เมื่อเคลื่อนแท่งแม่เหล็กเข้าหาขดลวดตัวนำวงกลมจำนวน $${p.N}\\text{ รอบ}$ ทำให้ฟลักซ์แม่เหล็กผ่านขดลวดเพิ่มขึ้นจาก $${p.phi1Disp}\\text{ Wb}$ เป็น $${p.phi2Disp}\\text{ Wb}$ ในช่วงเวลา $${p.dt}\\text{ s}$ จงหาขนาดของอีเอ็มเอฟเหนี่ยวนำเฉลี่ยที่เกิดขึ้นในขดลวดนี้ (สามารถตอบในรูปทศนิยมธรรมดา หรือสัญกรณ์วิทยาศาสตร์ เช่น 1.0e-4)`,
+        text: (p) => `เมื่อเคลื่อนแท่งแม่เหล็กเข้าหาขดลวดตัวนำวงกลมจำนวน $${p.N}\\text{ รอบ}$ ทำให้ฟลักซ์แม่เหล็กผ่านขดลวดเพิ่มขึ้นจาก $${p.phi1Disp}\\text{ Wb}$ เป็น $${p.phi2Disp}\\text{ Wb}$ ในช่วงเวลา $${p.dt}\\text{ s}$ จงหาขนาดของอีเอ็มเอฟเหนี่ยวนำเฉลี่ยที่เกิดขึ้นในขดลวดนี้ (สามารถตอบในรูปทศนิยมธรรมดา หรือสัญกรณ์วิทยาศาสตร์ เช่น 1.0e-1)`,
         generate: (rand) => {
           const N = rand ? [1, 10, 50, 100][Math.floor(Math.random() * 4)] : 1;
           const phi1Val = rand ? roundHalfEven(1.0 + Math.random() * 4.0, 1) : 1.0;
