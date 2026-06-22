@@ -2990,17 +2990,30 @@
       <p>จากรูป 1 ถ้าเคลื่อนขั้วใต้ S ของแท่งแม่เหล็กเข้าหาศูนย์กลางของขดลวด และจากรูป 2 ถ้าเคลื่อนขั้วใต้ S ของแท่งแม่เหล็กออกจากศูนย์กลางของขดลวด จงเขียนทิศทางของกระแสไฟฟ้าเหนี่ยวนำที่เกิดขึ้นในขดลวดทั้งสอง (เมื่อมองจากฝั่งขวาที่เป็นฝั่งแท่งแม่เหล็กมองเข้าหาขดลวด)</p>
     </div>`,
         generate: (rand) => {
+          const defaultChoices = [
+            'รูป 1: ตามเข็มนาฬิกา, รูป 2: ทวนเข็มนาฬิกา',
+            'รูป 1: ทวนเข็มนาฬิกา, รูป 2: ตามเข็มนาฬิกา',
+            'รูป 1: ตามเข็มนาฬิกา, รูป 2: ตามเข็มนาฬิกา',
+            'รูป 1: ทวนเข็มนาฬิกา, รูป 2: ทวนเข็มนาฬิกา'
+          ];
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const shuffledChoices = [...defaultChoices];
+          for (let i = shuffledChoices.length - 1; i > 0; i--) {
+            const j = Math.floor(randFunc() * (i + 1));
+            [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+          }
           return {
             params: {},
+            choices: shuffledChoices,
             answers: ['รูป 1: ตามเข็มนาฬิกา, รูป 2: ทวนเข็มนาฬิกา'],
-            answersRaw: [0],
+            answersRaw: [shuffledChoices.indexOf('รูป 1: ตามเข็มนาฬิกา, รูป 2: ทวนเข็มนาฬิกา')],
             explanation: () => `<strong>วิเคราะห์ตามกฎของเลนส์ (Lenz's Law):</strong>
         <br>• <strong>รูป 1 (เคลื่อนขั้วใต้ S เข้าหาขดลวด):</strong> 
         <br>- ขดลวดตัวนำต้องการต้านการเคลื่อนที่เข้าของขั้วใต้ (S) จึงเหนี่ยวนำให้ฝั่งขวา (ฝั่งใกล้แม่เหล็ก) เกิดเป็น <strong>ขั้วใต้ (S)</strong> เพื่อต้านกัน
         <br>- เมื่อเกิดขั้วใต้ (S) ที่ฝั่งขวา กระแสเหนี่ยวนำที่มองจากฝั่งขวา (ฝั่งแม่เหล็ก) จึงต้องไหลในทิศ <strong>ตามเข็มนาฬิกา</strong>
         <br><br>• <strong>รูป 2 (เคลื่อนขั้วใต้ S ออกจากขดลวด):</strong> 
         <br>- ขดลวดตัวนำต้องการต้านการเคลื่อนที่ออกของขั้วใต้ (S) จึงเหนี่ยวนำให้ฝั่งขวา (ฝั่งใกล้แม่เหล็ก) เกิดเป็น <strong>ขั้วเหนือ (N)</strong> เพื่อดึงดูดกันไว้
-        <br>- เมื่อเกิดขั้วเหนือ (N) ที่ฝั่งขวา กระแสเหนี่ยวนำที่มองจากฝั่งขวา (ฝั่งแม่เหล็ก) จึงต้องไหล in ทิศ <strong>ทวนเข็มนาฬิกา</strong>`
+        <br>- เมื่อเกิดขั้วเหนือ (N) ที่ฝั่งขวา กระแสเหนี่ยวนำที่มองจากฝั่งขวา (ฝั่งแม่เหล็ก) จึงต้องไหลในทิศ <strong>ทวนเข็มนาฬิกา</strong>`
           };
         }
       },
@@ -3387,7 +3400,7 @@
         }
       },
       {
-        id: '15_5_img1_transformer_n2', topic: '15.5', type: 'numeric',
+        id: '15_5_img1_transformer_n2', topic: '15.5', type: 'numeric_single',
         title: 'คำนวณรอบขดลวดทุติยภูมิ (Unseen-1)',
         inputs: [{ label: 'จำนวนรอบขดลวดทุติยภูมิ (รอบ):' }],
         text: (p) => `หม้อแปลงไฟฟ้าซึ่งใช้ไฟฟ้า ${p.V1} โวลต์ มีขดลวดปฐมภูมิ ${p.N1} รอบ ถ้าต้องการให้หม้อแปลงนี้สามารถจ่ายไฟฟ้าได้ ${p.V2} โวลต์ ขดลวดทุติยภูมิต้องมีจำนวนรอบเท่าไร`,
@@ -3409,7 +3422,7 @@
         }
       },
       {
-        id: '15_5_img2_transformer_eff', topic: '15.5', type: 'numeric',
+        id: '15_5_img2_transformer_eff', topic: '15.5', type: 'numeric_single',
         title: 'ประสิทธิภาพหม้อแปลงและกระแสปฐมภูมิ (Unseen-2)',
         inputs: [{ label: 'กระแสไฟฟ้าปฐมภูมิ (A):' }],
         text: (p) => `หม้อแปลงไฟลงจาก  ${p.V1} โวลต์ เป็น ${p.V2} โวลต์ เกิดกำลังในขดลวดทุติยภูมิ ${p.P2} กิโลวัตต์ หม้อแปลงมีประสิทธิภาพร้อยละ ${p.Eff} กระแสไฟฟ้าที่ผ่านขดลวดปฐมภูมิมีค่าเท่าใด (ตอบปัดทศนิยม 2 ตำแหน่ง)`,
@@ -3434,7 +3447,7 @@
         }
       },
       {
-        id: '15_5_img3_ac_im', topic: '15.5', type: 'numeric',
+        id: '15_5_img3_ac_im', topic: '15.5', type: 'numeric_single',
         title: 'หากระแสสูงสุดจากแอมมิเตอร์ (Unseen-3)',
         inputs: [{ label: 'กระแสสูงสุด Im (A):' }],
         text: (p) => `แอมมิเตอร์กระแสไฟฟ้าสลับต่ออนุกรมกับหลอดไฟอ่านค่าได้ ${p.Irms} แอมแปร์ จงหากระแสสูงสุด ($I_m$) ที่ไหลผ่านหลอดไฟในหน่วยแอมแปร์ (ปัดทศนิยม 2 ตำแหน่ง กำหนด $\\sqrt{2} \\approx 1.414$)`,
@@ -3453,7 +3466,7 @@
         }
       },
       {
-        id: '15_5_img4_ac_vmax', topic: '15.5', type: 'numeric',
+        id: '15_5_img4_ac_vmax', topic: '15.5', type: 'numeric_single',
         title: 'ความต่างศักย์สูงสุดของไฟบ้าน (Unseen-4)',
         inputs: [{ label: 'ความต่างศักย์สูงสุด (V):' }],
         text: (p) => `ถ้ากล่าวว่าไฟฟ้าในบ้านมีความต่างศักย์ ${p.Vrms} โวลต์ หมายความว่าความต่างศักย์สูงสุดมีค่ากี่โวลต์ (ปัดทศนิยม 1 ตำแหน่ง กำหนด $\\sqrt{2} \\approx 1.414$)`,
@@ -3537,7 +3550,8 @@
         choiceZone.classList.remove('hidden');
         numericZone.classList.add('hidden');
         choiceZone.innerHTML = '';
-        template.choices.forEach((c) => {
+        const choicesToRender = instance.choices || template.choices || [];
+        choicesToRender.forEach((c) => {
           choiceZone.innerHTML += `<button onclick="checkPracticeChoice('${c}')" class="w-full text-left px-4 py-3 bg-slate-50 hover:bg-slate-100 text-slate-800 font-medium rounded-xl border border-slate-200 transition">${c}</button>`;
         });
       } else {
@@ -3648,7 +3662,7 @@
         const instance = getPhysicsTemplateInstance(template, true, num);
         return {
           id: template.id, topic: template.topic, type: template.type, title: template.title,
-          text: template.text(instance.params), inputs: template.inputs || [], choices: template.choices || [],
+          text: template.text(instance.params), inputs: template.inputs || [], choices: instance.choices || template.choices || [],
           answers: instance.answers, answersRaw: instance.answersRaw, explanationText: instance.explanation()
         };
       });
