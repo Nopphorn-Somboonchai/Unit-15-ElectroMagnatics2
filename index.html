@@ -1627,7 +1627,6 @@
                   class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-violet-500 focus:outline-none text-sm">
               </div>
             </div>
-          </div>
         </div>
 
         <div class="flex gap-3 pt-2">
@@ -1865,81 +1864,18 @@
       return pool.slice(0, count);
     }
 
-    /**
-     * 2. ฟังก์ชันสร้างตัวเลขสุ่มเทียมโดยใช้ Seed (Linear Congruential Generator - LCG)
-     * เพื่อให้นักเรียนที่กรอกเลขที่เดียวกัน จะได้โจทย์ตัวเลขชุดเดียวกันเสมอ แต่ละเลขที่จะได้เลขไม่เหมือนกัน
-     * @param {number} seed - ตัวเลขสุ่มตั้งต้น (ในที่นี้จะใช้ค่า เลขที่ ของนักเรียน)
-     * @returns {function} ฟังก์ชันสุ่มที่ให้ค่าระหว่าง 0 ถึง 1
-     */
-    function createSeedRandom(seed) {
-      // ค่าคงที่ตามมาตรฐานมินิมอล LCG
-      let m = 0x80000000; // 2**31
-      let a = 1103515245;
-      let c = 12345;
-      let state = seed ? parseInt(seed) : Math.floor(Math.random() * m);
-
-      return function () {
-        state = (a * state + c) % m;
-        return state / (m - 1);
-      };
-    }
-
-    /**
-     * 3. ฟังก์ชันสุ่มตัวเลขแบบช่วงโดยใช้ Seed Random
-     */
-    function getSeedRandomRange(seedRandomFunc, min, max, step = 1) {
-      const range = (max - min) / step;
-      const randIdx = Math.floor(seedRandomFunc() * (range + 1));
-      const result = min + (randIdx * step);
-      return roundHalfEven(result, 4);
-    }
-
-    /**
-     * 4. ฟังก์ชันสุ่มค่าแบบไม่ซ้ำกันในชุดข้อสอบโดยอิงจากเลขที่ของนักเรียน (Seed-based Unique Shuffler)
-     */
-    function generateSeedUniqueValues(seedRandomFunc, count, min, max, step = 1) {
-      const pool = [];
-      for (let val = min; val <= max; val = roundHalfEven(val + step, 4)) {
-        pool.push(val);
-      }
-
-      // ใช้ Seed Random ในการสลับแทน Math.random() ป้องกันข้อสอบซ้ำระหว่างข้อ
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(seedRandomFunc() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-
-      return pool.slice(0, count);
-    }
 
     // ==========================================================================
     // MODIFIED TEMPLATE REGENERATOR (ผูกระบบสุ่มเข้ากับชุดโจทย์ดั้งเดิมของเว็บบอร์ด)
     // ==========================================================================
 
-    // ปรับปรุงฟังก์ชันแปลงโจทย์ให้รองรับทั้งโหมดสุ่มอิสระ และโหมดผูกเลขที่สอบ
-    function getPhysicsTemplateInstance(template, isRandom, studentNo = null) {
-      // หากเป็นโหมดสอบเก็บคะแนนและมีการกรอกเลขที่ ให้สร้างฟังก์ชัน Seed Random ประจำเลขที่นั้น
-      let seedFunc = null;
-      if (studentNo !== null) {
-        // ผูกเลขที่ร่วมกับรหัส ID โจทย์เพื่อไม่ให้ตัวแปรของข้อ 1 ไปซ้ำกับข้อ 2
-        let stringSeed = studentNo.toString() + template.id.replace(/[^0-9]/g, '');
-        let seedInt = 0;
-        for (let i = 0; i < stringSeed.length; i++) {
-          seedInt += stringSeed.charCodeAt(i);
-        }
-        seedFunc = createSeedRandom(seedInt);
-      }
-
+    // ปรับปรุงฟังก์ชันแปลงโจทย์ให้รองรับโหมดสุ่มอิสระ
+    function getPhysicsTemplateInstance(template, isRandom) {
       // --- กรณีโจทย์ที่ 1: คำนวณอีเอ็มเอฟเหนี่ยวนำเฉลี่ย (15_4_ex1) ---
       if (template.id === '15_4_ex1') {
         let N, phi1Val, phi2Val, dt;
 
-        if (seedFunc) { // โหมดสอบ (ผูกเลขที่)
-          N = [1, 10, 50, 100][Math.floor(seedFunc() * 4)];
-          phi1Val = getSeedRandomRange(seedFunc, 1.0, 5.0, 0.5);
-          phi2Val = getSeedRandomRange(seedFunc, phi1Val + 0.2, phi1Val + 2.5, 0.1);
-          dt = getSeedRandomRange(seedFunc, 0.10, 0.80, 0.05);
-        } else if (isRandom) { // โหมดฝึกซ้อมแบบสุ่มอิสระทั่วไป (ป้องกันเลขซ้ำผ่าน Unique Generator)
+        if (isRandom) { // โหมดฝึกซ้อมแบบสุ่มอิสระทั่วไป (ป้องกันเลขซ้ำผ่าน Unique Generator)
           const randomN = generateUniqueRandomValues(1, 10, 150, 10);
           N = randomN[0];
           const phis = generateUniqueRandomValues(2, 1.0, 6.0, 0.2).sort(); // สุ่ม 2 ค่าไม่ซ้ำกันชัวร์ๆ แล้วจับเรียงน้อยไปมาก
@@ -1971,10 +1907,7 @@
       // --- กรณีโจทย์ที่ 2: วิเคราะห์สมการกระแสสลับ (15_5_ex1) ---
       if (template.id === '15_5_ex1') {
         let I0, omega;
-        if (seedFunc) {
-          I0 = [2, 4, 5, 6, 8, 10, 12][Math.floor(seedFunc() * 7)];
-          omega = [314, 377, 628][Math.floor(seedFunc() * 3)];
-        } else if (isRandom) {
+        if (isRandom) {
           I0 = generateUniqueRandomValues(1, 2, 15, 1)[0];
           omega = generateUniqueRandomValues(1, 100, 600, 50)[0];
         } else {
@@ -1994,10 +1927,7 @@
       // --- กรณีโจทย์ที่ 3: กระแสสูงสุดผ่านตัวต้านทาน (15_5_ex2) ---
       if (template.id === '15_5_ex2') {
         let R, Vrms;
-        if (seedFunc) {
-          R = [40, 50, 60, 80, 100, 120, 150][Math.floor(seedFunc() * 7)];
-          Vrms = [20, 100, 110, 120, 220, 240][Math.floor(seedFunc() * 6)];
-        } else if (isRandom) {
+        if (isRandom) {
           R = generateUniqueRandomValues(1, 30, 200, 10)[0];
           Vrms = generateUniqueRandomValues(1, 50, 250, 10)[0];
         } else {
@@ -2018,11 +1948,7 @@
       // --- กรณีโจทย์ที่ 4: ความสัมพันธ์ขดลวดหม้อแปลงไฟฟ้า (15_5_ex3) ---
       if (template.id === '15_5_ex3') {
         let N1, N2, V1;
-        if (seedFunc) {
-          N1 = [400, 500, 800, 1000][Math.floor(seedFunc() * 4)];
-          N2 = [100, 200, 250, 500, 2000][Math.floor(seedFunc() * 5)];
-          V1 = [110, 220, 240][Math.floor(seedFunc() * 3)];
-        } else if (isRandom) {
+        if (isRandom) {
           const turns = generateUniqueRandomValues(2, 100, 1500, 50); // สุ่มจำนวนรอบต้นสาย-ปลายสายไม่มีทางเท่ากันแน่นอน
           N1 = turns[0];
           N2 = turns[1];
@@ -2043,10 +1969,7 @@
       // --- กรณีโจทย์ที่ 5: วิเคราะห์สมการความต่างศักย์ไฟฟ้ากระแสสลับ (15_5_ex4) ---
       if (template.id === '15_5_ex4') {
         let V0, f;
-        if (seedFunc) {
-          V0 = [30, 45, 60, 110, 220, 311][Math.floor(seedFunc() * 6)];
-          f = [50, 60][Math.floor(seedFunc() * 2)];
-        } else if (isRandom) {
+        if (isRandom) {
           V0 = generateUniqueRandomValues(1, 30, 350, 10)[0];
           f = generateUniqueRandomValues(1, 50, 60, 10)[0];
         } else {
@@ -2067,7 +1990,7 @@
       }
 
       // ตกเขียวส่งกลับคืนฟังก์ชัน Default กรณีเป็นโจทย์คอนเซปต์ที่ไม่ใช่คำนวณเชิงตัวเลข
-      return template.generate(seedFunc || isRandom);
+      return template.generate(isRandom);
     }
     let currentSection = 'home';
     let currentReviewTab = '15-4';
@@ -3405,9 +3328,10 @@
         inputs: [{ label: 'จำนวนรอบขดลวดทุติยภูมิ (รอบ):' }],
         text: (p) => `หม้อแปลงไฟฟ้าซึ่งใช้ไฟฟ้า ${p.V1} โวลต์ มีขดลวดปฐมภูมิ ${p.N1} รอบ ถ้าต้องการให้หม้อแปลงนี้สามารถจ่ายไฟฟ้าได้ ${p.V2} โวลต์ ขดลวดทุติยภูมิต้องมีจำนวนรอบเท่าไร`,
         generate: (rand) => {
-          const V1 = rand ? [100, 200, 220, 240][Math.floor(Math.random() * 4)] : 200;
-          const N1 = rand ? [50, 100, 200][Math.floor(Math.random() * 3)] : 100;
-          const V2 = rand ? [1000, 2000, 3000, 4000][Math.floor(Math.random() * 4)] : 3000;
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const V1 = rand ? [100, 200, 220, 240][Math.floor(randFunc() * 4)] : 200;
+          const N1 = rand ? [50, 100, 200][Math.floor(randFunc() * 3)] : 100;
+          const V2 = rand ? [1000, 2000, 3000, 4000][Math.floor(randFunc() * 4)] : 3000;
           const N2 = (V2 / V1) * N1;
           return {
             params: { V1, N1, V2 },
@@ -3427,10 +3351,11 @@
         inputs: [{ label: 'กระแสไฟฟ้าปฐมภูมิ (A):' }],
         text: (p) => `หม้อแปลงไฟลงจาก  ${p.V1} โวลต์ เป็น ${p.V2} โวลต์ เกิดกำลังในขดลวดทุติยภูมิ ${p.P2} กิโลวัตต์ หม้อแปลงมีประสิทธิภาพร้อยละ ${p.Eff} กระแสไฟฟ้าที่ผ่านขดลวดปฐมภูมิมีค่าเท่าใด (ตอบปัดทศนิยม 2 ตำแหน่ง)`,
         generate: (rand) => {
-          const V1 = rand ? [10000, 20000, 22000][Math.floor(Math.random() * 3)] : 20000;
-          const V2 = rand ? [100, 200, 220][Math.floor(Math.random() * 3)] : 200;
-          const P2_kW = rand ? [2.8, 5.6, 11.2][Math.floor(Math.random() * 3)] : 5.6;
-          const Eff = rand ? [80, 90][Math.floor(Math.random() * 2)] : 80;
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const V1 = rand ? [10000, 20000, 22000][Math.floor(randFunc() * 3)] : 20000;
+          const V2 = rand ? [100, 200, 220][Math.floor(randFunc() * 3)] : 200;
+          const P2_kW = rand ? [2.8, 5.6, 11.2][Math.floor(randFunc() * 3)] : 5.6;
+          const Eff = rand ? [80, 90][Math.floor(randFunc() * 2)] : 80;
           const P2_W = P2_kW * 1000;
           const P1_W = P2_W / (Eff / 100);
           const I1 = P1_W / V1;
@@ -3452,7 +3377,8 @@
         inputs: [{ label: 'กระแสสูงสุด Im (A):' }],
         text: (p) => `แอมมิเตอร์กระแสไฟฟ้าสลับต่ออนุกรมกับหลอดไฟอ่านค่าได้ ${p.Irms} แอมแปร์ จงหากระแสสูงสุด ($I_m$) ที่ไหลผ่านหลอดไฟในหน่วยแอมแปร์ (ปัดทศนิยม 2 ตำแหน่ง กำหนด $\\sqrt{2} \\approx 1.414$)`,
         generate: (rand) => {
-          const Irms = rand ? [0.25, 0.50, 1.25][Math.floor(Math.random() * 3)] : 0.25;
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const Irms = rand ? [0.25, 0.50, 1.25][Math.floor(randFunc() * 3)] : 0.25;
           const Im = Irms * Math.sqrt(2);
           return {
             params: { Irms },
@@ -3471,7 +3397,8 @@
         inputs: [{ label: 'ความต่างศักย์สูงสุด (V):' }],
         text: (p) => `ถ้ากล่าวว่าไฟฟ้าในบ้านมีความต่างศักย์ ${p.Vrms} โวลต์ หมายความว่าความต่างศักย์สูงสุดมีค่ากี่โวลต์ (ปัดทศนิยม 1 ตำแหน่ง กำหนด $\\sqrt{2} \\approx 1.414$)`,
         generate: (rand) => {
-          const Vrms = rand ? [110, 220, 240][Math.floor(Math.random() * 3)] : 220;
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const Vrms = rand ? [110, 220, 240][Math.floor(randFunc() * 3)] : 220;
           const Vmax = Vrms * Math.sqrt(2);
           return {
             params: { Vrms },
@@ -3493,8 +3420,9 @@
         ],
         text: (p) => `โวลต์มิเตอร์ตัวหนึ่งอ่านค่าความต่างศักย์ของไฟบ้านซึ่งเป็นไฟฟ้ากระแสสลับ ${p.f} เฮิรตซ์ ได้ ${p.Vrms} โวลต์ ถ้า $V$ เป็นค่าความต่างศักย์ระหว่างคู่สายที่เวลา $t$ ใดๆ สามารถเขียนสมการในรูป $V = A \\sin(B\\pi t)$ จงหาค่า $A$ (ปัดเป็นจำนวนเต็ม) และ $B$`,
         generate: (rand) => {
-          const f = rand ? [50, 60][Math.floor(Math.random() * 2)] : 50;
-          const Vrms = rand ? [110, 200, 220][Math.floor(Math.random() * 3)] : 200;
+          const randFunc = (typeof rand === 'function') ? rand : Math.random;
+          const f = rand ? [50, 60][Math.floor(randFunc() * 2)] : 50;
+          const Vrms = rand ? [110, 200, 220][Math.floor(randFunc() * 3)] : 200;
           const Vmax = Math.round(Vrms * Math.sqrt(2));
           const B = 2 * f;
           return {
@@ -3653,13 +3581,58 @@
         return;
       }
       examStudentInfo = { name, class: cls, number: num };
-      const q15_4 = QUESTION_TEMPLATES.filter(q => q.topic === '15.4');
-      const q15_5 = QUESTION_TEMPLATES.filter(q => q.topic === '15.5');
-      const shuffled_4 = q15_4.sort(() => 0.5 - Math.random());
-      const shuffled_5 = q15_5.sort(() => 0.5 - Math.random());
-      const selectedTemplates = [shuffled_4[0], shuffled_4[1], shuffled_5[0], shuffled_5[1], shuffled_5[2]];
-      const generatedQuestions = selectedTemplates.map((template) => {
-        const instance = getPhysicsTemplateInstance(template, true, num);
+      
+      // Filter unique templates by ID to avoid duplicate questions
+      const uniqueTemplates = [];
+      const seenIds = new Set();
+      for (const q of QUESTION_TEMPLATES) {
+        if (!seenIds.has(q.id)) {
+          seenIds.add(q.id);
+          uniqueTemplates.push(q);
+        }
+      }
+
+      // Filter choice and numeric templates
+      const choiceTemplates = uniqueTemplates.filter(q => q.type === 'choice');
+      const numericTemplates = uniqueTemplates.filter(q => q.type.startsWith('numeric'));
+
+      // Helper function to shuffle array
+      const shuffleArray = (arr) => {
+        const array = [...arr];
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      };
+
+      const shuffledChoices = shuffleArray(choiceTemplates);
+      const selectedChoice = shuffledChoices[0];
+      const selectedNumerics = [];
+
+      // Ensure that both 15.4 and 15.5 topics are represented if possible
+      if (selectedChoice.topic === '15.5') {
+        // Since choice is from 15.5, we must include the numeric question from 15.4 to represent 15.4
+        const numeric15_4 = numericTemplates.filter(q => q.topic === '15.4');
+        const numeric15_5 = numericTemplates.filter(q => q.topic === '15.5');
+        const shuffled15_5 = shuffleArray(numeric15_5);
+        
+        selectedNumerics.push(...numeric15_4);
+        selectedNumerics.push(...shuffled15_5.slice(0, 3));
+      } else {
+        // Choice is from 15.4, so 15.4 is represented.
+        // We pick 4 numeric questions from the entire numeric pool.
+        // Since 15.5 has 9 numeric questions and 15.4 has 1, this guarantees 15.5 is also represented.
+        const shuffledNumerics = shuffleArray(numericTemplates);
+        selectedNumerics.push(...shuffledNumerics.slice(0, 4));
+      }
+
+      const selectedTemplates = [selectedChoice, ...selectedNumerics];
+      // Final shuffle of the 5 selected templates
+      const finalTemplates = shuffleArray(selectedTemplates);
+
+      const generatedQuestions = finalTemplates.map((template) => {
+        const instance = getPhysicsTemplateInstance(template, true);
         return {
           id: template.id, topic: template.topic, type: template.type, title: template.title,
           text: template.text(instance.params), inputs: template.inputs || [], choices: instance.choices || template.choices || [],

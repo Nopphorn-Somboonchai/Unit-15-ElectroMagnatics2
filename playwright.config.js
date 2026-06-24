@@ -67,5 +67,17 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+
+  /* รัน Local dev server ก่อนเริ่มเทสต์ */
+  webServer: {
+    command: 'npm serve .', // คำสั่งที่คุณใช้รันโปรเจกต์ตามปกติ
+    url: 'http://localhost:3000', // URL ของโปรเจกต์คุณ
+    reuseExistingServer: !process.env.CI,
+  },
+
+  use: {
+    // ตั้งค่า baseURL เพื่อให้ในไฟล์เทสต์เขียนแค่ page.goto('/') ได้เลย
+    baseURL: 'http://localhost:3000',
+  }
 });
 
